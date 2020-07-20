@@ -32,7 +32,7 @@
 void initGPIO(void)
 {
   // Configure PA6 as output
-  GPIO_PinModeSet(gpioPortA, 6, gpioModePushPull, 0);
+  GPIO_PinModeSet(gpioPortD, 3, gpioModePushPull, 0);
 }
 
 /**************************************************************************//**
@@ -67,8 +67,8 @@ void initTIMER(void)
 
   // Route Timer0 CC0 output to PA6
   GPIO->TIMERROUTE[0].ROUTEEN  = GPIO_TIMER_ROUTEEN_CC0PEN;
-  GPIO->TIMERROUTE[0].CC0ROUTE = (gpioPortA << _GPIO_TIMER_CC0ROUTE_PORT_SHIFT)
-  								  | (6 << _GPIO_TIMER_CC0ROUTE_PIN_SHIFT);
+  GPIO->TIMERROUTE[0].CC0ROUTE = (gpioPortD << _GPIO_TIMER_CC0ROUTE_PORT_SHIFT)
+  								  | (3 << _GPIO_TIMER_CC0ROUTE_PIN_SHIFT);
 
   TIMER_InitCC(TIMER0, 0, &timerCCInit);
 
