@@ -45,7 +45,7 @@ static uint16_t buffer[BUFFER_SIZE];
 void initGpio(void)
 {
   // Configure PA6 as output
-  GPIO_PinModeSet(gpioPortA, 6, gpioModePushPull, 0);
+  GPIO_PinModeSet(gpioPortD, 3, gpioModePushPull, 0);
 }
 
 /**************************************************************************//**
@@ -135,13 +135,16 @@ void initLdma(void)
     LDMA_TRANSFER_CFG_PERIPHERAL(ldmaPeripheralSignal_TIMER0_CC0);
 
   // Channel descriptor configuration
+  // Changed LINKREL  to SIMPLE
   static LDMA_Descriptor_t descriptor =
-    LDMA_DESCRIPTOR_LINKREL_M2P_BYTE(&buffer,            // Memory source address
+    LDMA_DESCRIPTOR_SINGLE_M2P_BYTE(&buffer,            // Memory source address
                                     &TIMER0->CC[0].OCB, // Peripheral destination address
-                                    BUFFER_SIZE,         // Number of bytes per transfer
-                                    0);                  // Link to same descriptor
+                                     BUFFER_SIZE);         // Number of bytes per transfer
+                                    // ,0);                  // Link to same descriptor
   descriptor.xfer.size     = ldmaCtrlSizeHalf; // Unit transfer size
-  descriptor.xfer.doneIfs  = 0;                // Don't trigger interrupt when done
+  descriptor.xfer.doneIfs  = 1;                // Don't trigger interrupt when done
+  //write an interupt handler to adress^
+  // em_lib documentation
 
   LDMA_StartTransfer(channelNum, &transferConfig, &descriptor);
 }
